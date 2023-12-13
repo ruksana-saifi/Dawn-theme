@@ -1,0 +1,63 @@
+{% assign productId = product.id %}
+
+<button id="{{ product.id }}">Add to Wishlist</button>
+
+<script>
+    document.getElementById('{{ product.id }}').addEventListener('click', function() {
+        var buttonIdToStore = this.id;
+
+        // Store the button ID in localStorage
+        localStorage.setItem('storedButtonId', buttonIdToStore);
+
+        // Update the button text content to "Added"
+        this.textContent = "Added";
+    });
+</script>
+=============
+
+<div class="page-width">
+  <div class="pro_item">
+    <h2 id="pro_title">Product Title</h2>
+    <p id="proDisId">Display id here</p>
+    <!-- Removed input and button elements -->
+  </div>
+</div>
+
+<script>
+  // Retrieve the stored button ID from localStorage
+  var storedButtonId = localStorage.getItem('storedButtonId');
+
+  // Update the content of the <p> element with the retrieved ID and product information
+  if (storedButtonId) {
+    // Assuming the stored ID is the product ID, use it directly for the API request
+    getProductInformation(storedButtonId);
+  } else {
+    document.getElementById('proDisId').textContent = "No ID stored yet.";
+  }
+
+  function getProductInformation(productId) {
+    // Make an AJAX request to the API endpoint
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          // Parse the JSON response
+          var productData = JSON.parse(xhr.responseText);
+
+          // Display the product title and information
+          document.getElementById('pro_title').textContent = productData.product.title;
+          document.getElementById('proDisId').textContent = productData.product.id;
+        } else {
+          // Handle the error if the request fails
+          document.getElementById('proDisId').textContent = "Error: Unable to fetch product information.";
+        }
+      }
+    };
+
+    // Replace 'https://example.com/api/products/' with your actual API endpoint
+    xhr.open('GET', 'https://9aedd91f2dfb6415f38656fedd95196a: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@studyheart.myshopify.com/admin/api/2023-10/products/' + productId + '.json', true);
+    xhr.send();
+  }
+</script>
+
+

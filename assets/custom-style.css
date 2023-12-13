@@ -1,0 +1,73 @@
+/* add to cart  */
+ .collection-cart {
+      /* margin-top: 40px; */
+  }
+  .addtocartbtn{
+       background: #01be94;
+  }
+  .add2cart_btn_group {
+    background: none;
+    border: none;
+    padding: 0;
+}
+  .add2cart_btn_group span,
+  .wishlist_buttons{
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: block;
+    color: #fff;
+}
+  .soldoutbtn {
+    background: #9f9292;
+}
+/* wishlist btn  */
+.variant-color ~ .cmnvariants{
+  display:none;
+}
+label.variant-color {
+    width: 50px;
+    height: 50px;
+}
+.product-form__submit {
+    border: 1px solid #01be94;
+}
+.wishicon{
+  width: 23px;
+  height:23px;
+}
+svg#Capa_1:hover {
+    transform:scale(1.1)
+}
+.btn_groups_parts {
+    display: flex;
+}
+.wishlist_buttons {
+    outline: none;
+    border: 2px solid #01be94;
+    color: #01be94;
+    background: #fff;
+    margin-left: 4px;
+    width: 50%;
+    padding: 0px;
+}
+.pro_item img {
+    width: 100%;
+    height: 100%;
+}
+.field:after, .select:after, .customer .field:after, .customer select:after, .localization-form__select:after {
+    box-shadow: none !important;
+}
+.field__input, .customer .field input {
+    border: 1px solid #000;
+}
+/* mega enu ig  */
+
+ul.list-unstyled li a {
+    display: flex;
+}
+ul.list-unstyled li a .product-info img {
+    width: 60px;
+    object-fit: cover;
+    height: 60px;
+    margin-right: 10px;
+}

@@ -1,0 +1,153 @@
+<style>
+  /* Styles for product container and items */
+  .product_container_area {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .product_items {
+    width: 25%;
+    padding: 10px;
+  }
+
+  /* Styles for individual product elements */
+  .pro_item {
+    background: #ffe0e0;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  /* Style for remove button */
+  .remove_button {
+    cursor: pointer;
+    color: red;
+    margin-top: 10px;
+  }
+</style>
+
+<div class="page-width">
+  <div class="product_container_area" id="productContainer">
+    <!-- Product elements will be dynamically added here -->
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var productDataArray = [];
+    var productContainer = document.getElementById('productContainer');
+
+    function createProductElement(title, productId, imageUrl, price) {
+      console.log('Creating product element for', productId, title, imageUrl, price);
+
+      var productItem = document.createElement('div');
+      productItem.classList.add('product_items');
+      var proItem = document.createElement('div');
+      proItem.classList.add('pro_item');
+      var h2 = document.createElement('h2');
+      h2.textContent = title;
+      var p = document.createElement('p');
+      p.textContent = "Product ID: " + productId;
+
+      // Add image element
+      var img = document.createElement('img');
+      img.src = imageUrl; // Set the image source URL
+      img.alt = title; // Set alt text for accessibility
+      proItem.appendChild(img);
+
+      // Add price element
+      var priceElement = document.createElement('p');
+      priceElement.textContent = "Price: $" + price.toFixed(2); // Assuming price is a number
+      proItem.appendChild(priceElement);
+
+      // Add Remove from Wishlist button
+      var removeButton = document.createElement('div');
+      removeButton.classList.add('remove_button');
+      removeButton.textContent = 'Remove from Wishlist';
+      removeButton.addEventListener('click', function () {
+        removeProductFromWishlist(productId);
+      });
+
+      proItem.appendChild(h2);
+      proItem.appendChild(p);
+      proItem.appendChild(removeButton);
+      productItem.appendChild(proItem);
+      productContainer.appendChild(productItem);
+    }
+
+    function removeProductFromWishlist(productId) {
+      console.log('Removing product from wishlist:', productId);
+
+      var indexToRemove = productDataArray.findIndex(function (product) {
+        return product.id === productId;
+      });
+
+      if (indexToRemove !== -1) {
+        productDataArray.splice(indexToRemove, 1);
+        localStorage.setItem('productData', JSON.stringify(productDataArray));
+        updateUI();
+      }
+
+      localStorage.removeItem('storedButtonId');
+    }
+
+    function getProductInformation(productId) {
+      console.log('Fetching product information for', productId);
+
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var productData = JSON.parse(xhr.responseText);
+            console.log("Product Data:", productData);
+
+            var price = productData.product.variants[0].price; // Extracting the price from the variants
+
+            productDataArray.push({
+              title: productData.product.title,
+              id: productData.product.id,
+              imageUrl: productData.product.image.src, // Add this line to get the image URL
+              price: parseFloat(price) // Parsing the price as a float
+            });
+
+            localStorage.setItem('productData', JSON.stringify(productDataArray));
+            updateUI();
+          } else {
+            console.error("Error: Unable to fetch product information. Status code:", xhr.status);
+            console.error("Error Response:", xhr.responseText);
+          }
+        }
+      };
+
+      // Replace 'your_api_key' and 'your_password' with your actual Shopify API key and password
+      var apiKey = '9aedd91f2dfb6415f38656fedd95196a';
+      var password = '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';
+      var authString = btoa(apiKey + ':' + password);
+      xhr.open('GET', 'https://studyheart.myshopify.com/admin/api/2023-10/products/' + productId + '.json', true);
+      xhr.setRequestHeader('Authorization', 'Basic ' + authString);
+      xhr.send();
+    }
+
+    function updateUI() {
+      console.log('Updating UI with product data');
+
+      productContainer.innerHTML = '';
+
+      productDataArray.forEach(function (product) {
+        createProductElement(product.title, product.id, product.imageUrl, product.price);
+      });
+    }
+
+    // Trigger the initial display based on stored product IDs
+    var storedButtonIds = localStorage.getItem('storedButtonId');
+
+    if (storedButtonIds) {
+      var productIdArray = storedButtonIds.split(',');
+
+      productIdArray.forEach(function(productId) {
+        getProductInformation(productId);
+      });
+    } else {
+      console.log("No ID stored yet.");
+    }
+  });
+</script>

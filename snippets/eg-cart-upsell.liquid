@@ -1,0 +1,87 @@
+<style>
+.owl-item .cart-item.item {
+    grid-template: repeat(2,auto) / repeat(1,1fr) !important;
+}
+</style>
+<div class="owl-carousel owl-theme">
+{% for item in cart.items %}
+  <div class="cart-item item">
+    {% if item.product.images.size > 0 %}
+      <img src="{{ item.product.images[0].src | img_url: 'medium' }}" alt="{{ item.product.title }} Image" width="" height="">
+    {% else %}
+      <img src="https://via.placeholder.com/150" alt="Placeholder Image" width="" height="">
+    {% endif %}
+    <div class="cart-item-details">
+      <p>{{ item.product.title }}</p>
+      <p>{{ item.quantity }} x {{ item.price | money }}</p>
+    </div>
+  </div>
+{% endfor %}
+</div>
+<div class="">
+    <div class=""><h4>1</h4></div>
+    <div class=""><h4>2</h4></div>
+    <div class=""><h4>3</h4></div>
+    <div class=""><h4>4</h4></div>
+    <div class=""><h4>5</h4></div>
+    <div class=""><h4>6</h4></div>
+    <div class=""><h4>7</h4></div>
+    <div class=""><h4>8</h4></div>
+    <div class=""><h4>9</h4></div>
+    <div class=""><h4>10</h4></div>
+    <div class=""><h4>11</h4></div>
+    <div class=""><h4>12</h4></div>
+</div>
+<div class="owl-carousel owl-theme">
+    <div class="item"><h4>1</h4></div>
+    <div class="item"><h4>2</h4></div>
+    <div class="item"><h4>3</h4></div>
+    <div class="item"><h4>4</h4></div>
+    <div class="item"><h4>5</h4></div>
+    <div class="item"><h4>6</h4></div>
+    <div class="item"><h4>7</h4></div>
+    <div class="item"><h4>8</h4></div>
+    <div class="item"><h4>9</h4></div>
+    <div class="item"><h4>10</h4></div>
+    <div class="item"><h4>11</h4></div>
+    <div class="item"><h4>12</h4></div>
+</div>
+<script>
+  $(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+      items: 2, // Number of items to be displayed at a time
+      margin: 10, // Space between items
+      loop: false,
+      rewind: true,
+      responsive: {
+        600: {
+          items: 2 // Number of items to be displayed at 600px and above
+        },
+        1000: {
+          items: 3 // Number of items to be displayed at 1000px and above
+        }
+        // Add more responsive breakpoints as needed
+      }
+    });
+     owl.on('initialized.owl.carousel', function(event){
+      // Remove cloned items after initialization
+      $('.owl-carousel .owl-item.cloned').remove();
+    });
+  });
+
+
+
+  $(document).ready(function(){
+   // Owl Carousel initialization code here
+   $(".owl-carousel").owlCarousel({
+      // ...
+   });
+
+   // Other JavaScript code, including code for the quantity button
+   $(".cart-quantity .quantity__button").on("click", function(){
+     console.log('dsfdf')
+     owl.trigger('refresh.owl.carousel');
+   });
+});
+
+</script>

@@ -1,0 +1,46 @@
+<div class="page-width">
+  <p>Learning</p>
+</div>
+
+{% schema %}
+  {
+    "name": "Learning",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Learning"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+const apiKey = '152c2e88a9746bab5399714e86abad61';
+const shopName = 'studyheart';
+const endpoint = `https://${shopName}.myshopify.com/admin/api/2023-10/graphql.json`;
+const storefrontAccessToken = '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'; // Replace with your actual storefront access token
+
+const query = `
+{
+  shop {
+    name
+    }
+}
+`;
+
+
+fetch(endpoint, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Shopify-Storefront-Access-Token': apiKey,
+  },
+  body: JSON.stringify({ query }),
+})
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+{% endjavascript %}

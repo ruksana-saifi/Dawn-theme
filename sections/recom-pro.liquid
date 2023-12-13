@@ -1,0 +1,23 @@
+<!-- sections/related-products.liquid -->
+
+{% assign related_tags = product.tags | join: ', ' | split: ', ' %}
+
+{% if related_tags.size > 0 %}
+  <div class="related-products">
+    <h2>Related Products</h2>
+    <div class="product-grid">
+      {% for tag in related_tags %}
+        {% assign related_products = collections.all.products | where: 'tag', tag %}
+        {% for product in related_products %}
+          {% unless product.id == product.id %}
+            <div class="product">
+              <h3>{{ product.title }}</h3>
+              <p>{{ product.price | money }}</p>
+              <!-- Add more product details as needed -->
+            </div>
+          {% endunless %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,47 @@
+<style>
+     
+
+</style>
+
+{% assign availablep = product.selected_or_first_available_variant.available %}
+
+<div class="collection-cart">
+  {% for variant in product.variants %}
+    <input type="hidden" id="variantgetid" value="{{ variant.id }}">
+  {% endfor %}
+  <button type="button" name="" class="add2cart_btn_group" id="collection-cart-{{ product.id }}">
+    {% if availablep == true %}
+     <span class="addtocartbtn">Add to cart</span> 
+      {% else %}
+      <span class="soldoutbtn">Sold Out</span>
+      {% endif %}
+  </button>
+</div>
+
+<script>
+  $(document).on('click', '#collection-cart-{{ product.id }}', function(){
+    let getvariantid = $(this).parents('.collection-cart').find('#variantgetid').val();
+  let formobj = {
+    quantity: 1,
+    id: getvariantid
+  };
+  $.ajax({
+    type: "POST",
+    url: "/cart/add.js",
+    cache: false,
+    data: formobj,
+    dataType: "json",
+    success: function(data) {
+      console.log('success');
+      $('a#cart-icon-bubble').click(); // for trigger cart drawer
+      $('cart-drawer').removeClass('is-empty'); // for hide empty cart
+      $('.drawer__inner-empty').hide(); // for hide empty cart
+      $('cart-drawer').load(location.href + " #CartDrawer"); // for refresh cart drawer page
+      $('#cart-icon-bubble').load(location.href + " #cart-icon-bubble"); // for refresh cart icon on header
+    },
+    error: function(xhr, ajaxOption, thrownError){
+      console.log("error")
+    }
+  });
+  });
+</script>

@@ -1,0 +1,65 @@
+{% comment %}
+  Replace the following line with your server-side code to get the product ID.
+  For demonstration purposes, I'm assuming a static product ID.
+{% endcomment %}
+{% assign productId = product.id %}
+
+<button id="{{ productId }}" class="wishlist_buttons">
+  Add to Wishlist
+</button>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var buttonElement = document.getElementById('{{ productId }}');
+
+    // Check if the current product ID is in the stored IDs
+    var isAdded = isProductAdded('{{ productId }}');
+
+    // Update the button text content
+    buttonElement.textContent = isAdded ? 'Added' : 'Add to Wishlist';
+
+    // Add a click event listener to the button
+    buttonElement.addEventListener('click', function () {
+      var currentProductId = this.id;
+
+      // Check if the current product ID is already in stored IDs
+      var isAlreadyAdded = isProductAdded(currentProductId);
+
+      if (isAlreadyAdded) {
+        // Remove the current product ID from stored IDs
+        removeProductId(currentProductId);
+      } else {
+        // Add the current product ID to stored IDs
+        addProductId(currentProductId);
+      }
+
+      // Update the button text content
+      this.textContent = isAlreadyAdded ? 'Add to Wishlist' : 'Added';
+    });
+  });
+
+  // Function to check if a product ID is in the stored IDs
+  function isProductAdded(productId) {
+    var storedButtonIds = localStorage.getItem('storedButtonId') || '';
+    return storedButtonIds.split(',').includes(productId);
+  }
+
+  // Function to add a product ID to stored IDs
+  function addProductId(productId) {
+    var storedButtonIds = localStorage.getItem('storedButtonId') || '';
+    var idArray = storedButtonIds.split(',');
+    idArray.push(productId);
+    localStorage.setItem('storedButtonId', idArray.join(','));
+  }
+
+  // Function to remove a product ID from stored IDs
+  function removeProductId(productId) {
+    var storedButtonIds = localStorage.getItem('storedButtonId') || '';
+    var idArray = storedButtonIds.split(',');
+    var index = idArray.indexOf(productId);
+    if (index !== -1) {
+      idArray.splice(index, 1);
+      localStorage.setItem('storedButtonId', idArray.join(','));
+    }
+  }
+</script>

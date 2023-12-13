@@ -1,0 +1,35 @@
+{% assign mainPrice = settings.freeshippingbar | plus: 0 %}
+{% assign cartPrice = cart.total_price | money_without_currency | times: 1 %}
+{% assign totalPrice = mainPrice | minus: cartPrice %}
+{% assign pr = totalPrice | times: 100 | divided_by: mainPrice  %}
+{% assign myPr = pr | minus: 100 | abs  %}
+
+
+<!-- (value/total value)×100%. -->
+<!-- Main price = {{ mainPrice }} <br>
+cart price = {{ cartPrice }} <br>
+totalPrice = {{ totalPrice }}<br>
+pr = {{ pr }}<bR>
+myPR= {{ myPr }}
+{{ cart.total_price }} -->
+
+
+<div class="progress-bar-area">
+   <div style="width: 100%; background-color:#f1f1f1 ; border-radius: 10px; overflow: hidden;">
+      {%  if cartPrice >= mainPrice %}
+          <div style="width: 100%; background-color:#01be94; border-radius: 0 10px 10px 0; height: 10px; text-align: center; line-height: 30px; color: white;">
+          </div>
+      {% else %}
+         <div style="width: {{ myPr }}%; background-color:#01be94; border-radius: 0 10px 10px 0; height: 10px; text-align: center; line-height: 30px; color: white;">
+         </div>
+      {% endif %}
+   </div>
+   {%  if cartPrice >= mainPrice %}
+     <p>🎉 Congrats! You've unlocked FREE SHIPPING!</p>
+   {% elsif cart.total_price == 0.0 %}
+     <p> You are ${{ mainPrice }} away from <strong>FREE SHIPPING</strong></p>
+   {% else %}
+     <p> You are ${{ totalPrice }} away from <strong>FREE SHIPPING</strong></p>
+   {% endif %}
+</div>
+
