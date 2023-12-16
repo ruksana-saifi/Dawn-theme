@@ -7,13 +7,13 @@ How to connect shopify to github
 
 3. use this command line
 echo "# Dawn-theme" >> README.md
-  git init // for initial git repo
-  git add README.md  // create readmefile
-  git commit -m "first commit" // for commit
-  git branch -M main // for change branch
-  git remote add origin https://github.com/ruksana-saifi/Dawn-theme.git 
-/* for connect shopify to local */ 
-  git push -u origin main // for shortcut
+  git init // for initial git repo <br>
+  git add README.md  // create readmefile  <br>
+  git commit -m "first commit" // for commit  <br>
+  git branch -M main // for change branch <br>
+  git remote add origin https://github.com/ruksana-saifi/Dawn-theme.git  <br>
+/* for connect shopify to local */  <br>
+  git push -u origin main // for shortcut <br>
 
 git add .
 git commit -m 'initail files'
